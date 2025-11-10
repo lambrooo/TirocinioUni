@@ -1,0 +1,6 @@
+torch
+pandas
+wandb
+matplotlib
+scikit-learn
+python-dotenv

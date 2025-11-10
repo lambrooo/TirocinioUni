@@ -1,0 +1,13 @@
+{"time":"2025-11-06T19:09:05.058429+01:00","level":"INFO","msg":"stream: starting","core version":"0.22.3"}
+{"time":"2025-11-06T19:09:05.386417+01:00","level":"INFO","msg":"stream: created new stream","id":"ie80al8m"}
+{"time":"2025-11-06T19:09:05.386505+01:00","level":"INFO","msg":"handler: started","stream_id":"ie80al8m"}
+{"time":"2025-11-06T19:09:05.38721+01:00","level":"INFO","msg":"stream: started","id":"ie80al8m"}
+{"time":"2025-11-06T19:09:05.387211+01:00","level":"INFO","msg":"writer: started","stream_id":"ie80al8m"}
+{"time":"2025-11-06T19:09:05.387445+01:00","level":"INFO","msg":"sender: started","stream_id":"ie80al8m"}
+{"time":"2025-11-06T19:09:06.031165+01:00","level":"INFO","msg":"flowcontrol: backed up, offloading to disk","recordNumber":37}
+{"time":"2025-11-06T19:09:06.202886+01:00","level":"INFO","msg":"flowcontrol: unblocked","totalOffloaded":2134}
+{"time":"2025-11-06T19:09:06.949431+01:00","level":"INFO","msg":"stream: closing","id":"ie80al8m"}
+{"time":"2025-11-06T19:09:08.183605+01:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-11-06T19:09:08.77879+01:00","level":"INFO","msg":"handler: closed","stream_id":"ie80al8m"}
+{"time":"2025-11-06T19:09:08.779795+01:00","level":"INFO","msg":"sender: closed","stream_id":"ie80al8m"}
+{"time":"2025-11-06T19:09:08.779808+01:00","level":"INFO","msg":"stream: closed","id":"ie80al8m"}

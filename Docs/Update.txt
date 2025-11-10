@@ -1,0 +1,74 @@
+# Checklist di Aggiornamento del Progetto
+
+Questo documento elenca i task tecnici necessari per implementare le fasi definite nel file `Progettazione.md`.
+
+---
+
+### **FASE 1: METRICHE DI PERFORMANCE**
+
+-   **Ambiente (`Environment`):**
+    -   [x] Aggiungere `t_safe` e `beta` come parametri del costruttore.
+    -   [x] Implementare il metodo `calculate_performance()` con la formula `load - beta * max(0, motor_temp - t_safe)`.
+
+-   **Simulazione (`run_simulation`):**
+    -   [x] Calcolare `performance` ad ogni step del loop.
+    -   [x] Aggiungere `performance` al dizionario `log_entry`.
+    -   [x] Aggiornare il salvataggio su CSV per includere la nuova colonna.
+    -   [x] Aggiornare il log su `wandb` per inviare la metrica `performance`.
+
+-   **Visualizzazione:**
+    -   [x] Aumentare il numero di subplot a 4.
+    -   [x] Aggiungere il grafico per l'andamento della `performance` nel tempo.
+    -   [x] Aggiungere una linea orizzontale per `T_safe` nel grafico della temperatura del motore.
+
+---
+
+### **FASE 2: PREPARAZIONE CYBERSECURITY (BASE)**
+
+-   **Sensore (`Sensor`):**
+    -   [x] Aggiungere l'attributo `trust_score` inizializzato a `1.0`.
+
+-   **Simulazione (`run_simulation`):**
+    -   [x] Aggiungere una variabile `is_under_attack` (0 o 1) nel loop.
+    -   [x] Impostare `is_under_attack = 1` durante i passi in cui viene introdotta un'anomalia/attacco.
+    -   [x] Aggiungere `is_under_attack` al `log_entry` (per CSV e wandb).
+
+-   **Visualizzazione:**
+    -   [x] Usare `axvspan` di Matplotlib per colorare lo sfondo dei grafici durante i periodi di attacco.
+
+---
+
+### **FASE 2.1: MODELLO AVANZATO DI MINACCE (Sviluppo Futuro)**
+
+-   **Logica di Simulazione (`run_simulation`):**
+    -   [ ] Refactor del loop per separare la logica delle anomalie naturali da quella degli attacchi.
+    -   [ ] Implementare un trigger probabilistico per le anomalie naturali (bassa probabilità, es. `random.random() < 0.001`).
+    -   [ ] Implementare un trigger separato (es. probabilistico o a intervalli) per gli attacchi esterni.
+    -   [ ] Aggiungere una colonna `natural_anomaly_active` al log per distinguerla da `is_under_attack`.
+
+-   **Sensore (`Sensor`):**
+    -   [ ] Espandere la classe `Sensor` per gestire logiche di attacco più complesse come `spoofing` (restituire un valore falso ma credibile) e `DoS` (restituire `None` o un valore obsoleto).
+
+-   **Cybersecurity (Difesa):**
+    -   [ ] Implementare una funzione `defend_reading()` (inizialmente vuota) che rappresenti il meccanismo di difesa da attivare/disattivare per i test.
+
+---
+
+### **FASE 3: AGENTE INTELLIGENTE (ACTIVE INFERENCE)**
+
+-   **Setup:**
+    -   [ ] Aggiungere `pymdp` al file `requirements.txt`.
+
+-   **Sviluppo Agente:**
+    -   [ ] Creare una nuova classe `ActiveInferenceAgent`.
+    -   [ ] Definire le dimensioni degli stati, delle osservazioni e delle azioni.
+    -   [ ] Costruire le matrici del modello generativo (A, B, C, D).
+    -   [ ] Implementare il metodo `get_commands()` che esegue il ciclo di inferenza e policy selection di `pymdp`.
+
+-   **Integrazione:**
+    -   [ ] Creare una funzione `discretize_state()` per convertire i valori continui dell'ambiente in indici discreti.
+    -   [ ] Modificare `run_simulation` per poter scegliere tra l'agente statico e l'agente Active Inference.
+    -   [ ] Loggare le credenze (`beliefs`) dell'agente per analizzarne il processo decisionale.
+
+-   **Valutazione:**
+    -   [ ] Eseguire simulazioni comparative e analizzare le metriche di performance e robustezza.

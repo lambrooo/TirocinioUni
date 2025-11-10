@@ -1,0 +1,43 @@
+_wandb:
+    value:
+        cli_version: 0.22.3
+        e:
+            deycrocqcrh93egjfsm9zyv3agqhrn1z:
+                apple:
+                    ecpuCores: 2
+                    gpuCores: 16
+                    memoryGb: 16
+                    name: Apple M1 Pro
+                    pcpuCores: 8
+                    ramTotalBytes: "17179869184"
+                    swapTotalBytes: "2147483648"
+                codePath: pytorch_simulation/simulation.py
+                codePathLocal: pytorch_simulation/simulation.py
+                cpu_count: 10
+                cpu_count_logical: 10
+                disk:
+                    /:
+                        total: "994662584320"
+                        used: "374066569216"
+                email: leonardo.lambruschi@gmail.com
+                executable: /Library/Developer/CommandLineTools/usr/bin/python3
+                host: MacBook-Pro-di-Leonardo.local
+                memory:
+                    total: "17179869184"
+                os: macOS-15.6-arm64-arm-64bit
+                program: /Users/leonardolambruschi/Desktop/Tirocinio/pytorch_simulation/simulation.py
+                python: CPython 3.9.6
+                root: /Users/leonardolambruschi/Desktop/Tirocinio
+                startedAt: "2025-11-06T17:39:25.852648Z"
+                writerId: deycrocqcrh93egjfsm9zyv3agqhrn1z
+        m: []
+        python_version: 3.9.6
+        t:
+            "1":
+                - 1
+            "2":
+                - 1
+            "4": 3.9.6
+            "5": 0.22.3
+            "12": 0.22.3
+            "13": darwin-arm64

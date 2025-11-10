@@ -1,0 +1,11 @@
+Step 100: Attacco 'outlier' con valore 100.0 su sensore 'motor_temperature'
+Step 200: Attacco 'outlier' con valore 100.0 su sensore 'motor_temperature'
+Step 300: Attacco 'bias' con valore 10.0 su sensore 'motor_temperature'
+Step 400: Attacco 'bias' con valore 10.0 su sensore 'temperature'
+Step 500: Attacco 'outlier' con valore 100.0 su sensore 'motor_temperature'
+Step 600: Attacco 'outlier' con valore 100.0 su sensore 'temperature'
+Step 700: Attacco 'outlier' con valore 100.0 su sensore 'motor_temperature'
+Step 800: Attacco 'outlier' con valore 100.0 su sensore 'motor_temperature'
+Step 900: Attacco 'outlier' con valore 100.0 su sensore 'motor_temperature'
+Dati di simulazione salvati in simulation_log.csv
+Grafici salvati in simulation_charts.png

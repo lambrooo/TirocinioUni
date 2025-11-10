@@ -1,0 +1,33 @@
+{
+  "os": "macOS-15.6-arm64-arm-64bit",
+  "python": "CPython 3.9.6",
+  "startedAt": "2025-11-06T18:09:04.771630Z",
+  "program": "/Users/leonardolambruschi/Desktop/Tirocinio/pytorch_simulation/simulation.py",
+  "codePath": "pytorch_simulation/simulation.py",
+  "codePathLocal": "pytorch_simulation/simulation.py",
+  "email": "leonardo.lambruschi@gmail.com",
+  "root": "/Users/leonardolambruschi/Desktop/Tirocinio",
+  "host": "MacBook-Pro-di-Leonardo.local",
+  "executable": "/Library/Developer/CommandLineTools/usr/bin/python3",
+  "cpu_count": 10,
+  "cpu_count_logical": 10,
+  "disk": {
+    "/": {
+      "total": "994662584320",
+      "used": "374149050368"
+    }
+  },
+  "memory": {
+    "total": "17179869184"
+  },
+  "apple": {
+    "name": "Apple M1 Pro",
+    "ecpuCores": 2,
+    "pcpuCores": 8,
+    "gpuCores": 16,
+    "memoryGb": 16,
+    "swapTotalBytes": "2147483648",
+    "ramTotalBytes": "17179869184"
+  },
+  "writerId": "qkesutfrv4rg83rbpypafhgp9l8v9ok6"
+}

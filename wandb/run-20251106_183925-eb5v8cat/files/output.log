@@ -1,0 +1,11 @@
+Step 100: Anomalia 'outlier' con valore 100.0 su sensore 'temperature'
+Step 200: Anomalia 'bias' con valore 10.0 su sensore 'load'
+Step 300: Anomalia 'outlier' con valore 100.0 su sensore 'load'
+Step 400: Anomalia 'bias' con valore 10.0 su sensore 'motor_temperature'
+Step 500: Anomalia 'bias' con valore 10.0 su sensore 'load'
+Step 600: Anomalia 'bias' con valore 10.0 su sensore 'load'
+Step 700: Anomalia 'bias' con valore 10.0 su sensore 'temperature'
+Step 800: Anomalia 'bias' con valore 10.0 su sensore 'motor_temperature'
+Step 900: Anomalia 'bias' con valore 10.0 su sensore 'load'
+Dati di simulazione salvati in simulation_log.csv
+Grafici salvati in simulation_charts.png
