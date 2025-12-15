@@ -23,7 +23,7 @@ Questo documento elenca i task tecnici necessari per implementare le fasi defini
 
 ---
 
-### **FASE 2: PREPARAZIONE CYBERSECURITY (BASE)**
+### **FASE 3: PREPARAZIONE CYBERSECURITY (BASE)**
 
 -   **Sensore (`Sensor`):**
     -   [x] Aggiungere l'attributo `trust_score` inizializzato a `1.0`.
@@ -38,7 +38,41 @@ Questo documento elenca i task tecnici necessari per implementare le fasi defini
 
 ---
 
-### **FASE 2.1: MODELLO AVANZATO DI MINACCE (Sviluppo Futuro)**
+### **FASE 4: ECONOMIA E GESTIONE INCERTEZZA**
+
+-   **Ambiente (`Environment`):**
+    -   [x] Aggiungere variabili di stato per economia e costi: `budget`, `cost_per_unit_of_load`, `fixed_operational_cost_per_step`.
+    -   [x] Aggiungere variabili di stato per la verifica: `is_verifying_sensor`, `verification_cost`, `verification_downtime`, `verification_sensor_name`.
+    -   [x] ~~Aggiungere variabili per investimento: `investment_done`, `investment_cost`, ecc.~~ (Sviluppo futuro)
+    -   [x] Implementare il metodo `trigger_verification()` che imposta `is_verifying_sensor` e `verification_paused`.
+    -   [x] ~~Implementare il metodo `trigger_investment()`~~ (Sviluppo futuro)
+    -   [x] Nel metodo `step()`:
+        -   [x] Deducire `fixed_operational_cost_per_step` dal budget.
+        -   [x] Implementare la logica per dedurre il `cost_per_unit_of_load` e limitare il `load` se il budget è insufficiente.
+        -   [x] Gestire il `verification_paused` (riduzione del carico) e il decremento del timer.
+
+-   **Sensore (`Sensor`):**
+    -   [x] Aggiungere `sampling_interval` al costruttore per creare incertezza.
+    -   [x] Modificare il metodo `read()` per fornire letture solo ogni `sampling_interval` step.
+    -   [x] Aggiungere un metodo `get_verified_reading()` che restituisce il valore vero.
+
+-   **Simulazione (`run_simulation`):**
+    -   [x] Inizializzare `Environment` e `Sensor` con i nuovi parametri.
+    -   [x] Calcolare `efficiency` e `revenue` ad ogni step e aggiornare il `budget`.
+    -   [x] **Commentare/rimuovere la logica decisionale per l'investimento.**
+    -   [x] Implementare la logica decisionale dell'agente statico per la "Verifica/Rimisurazione".
+    -   [x] Gestire l'attivazione della verifica, inclusi i periodi di `verification_paused`.
+    -   [x] Aggiungere al `log_entry` tutte le nuove variabili (`budget`, `revenue`, costi, `is_verifying_sensor`, ecc.).
+    -   [x] ~~Rimuovere dal log le variabili di investimento (`investment_done`, `production_paused`)~~.
+
+-   **Visualizzazione:**
+    -   [x] Aggiungere un grafico per l'andamento del `budget` nel tempo.
+    -   [x] Segnare i punti di `verifica` con linee verticali nei grafici.
+    -   [x] ~~Rimuovere la visualizzazione per l'investimento.~~
+
+---
+
+### **FASE 5: MODELLO AVANZATO DI MINACCE (Sviluppo Futuro)**
 
 -   **Logica di Simulazione (`run_simulation`):**
     -   [ ] Refactor del loop per separare la logica delle anomalie naturali da quella degli attacchi.
@@ -54,7 +88,7 @@ Questo documento elenca i task tecnici necessari per implementare le fasi defini
 
 ---
 
-### **FASE 3: AGENTE INTELLIGENTE (ACTIVE INFERENCE)**
+### **FASE 6: AGENTE INTELLIGENTE (ACTIVE INFERENCE)**
 
 -   **Setup:**
     -   [ ] Aggiungere `pymdp` al file `requirements.txt`.

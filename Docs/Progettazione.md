@@ -80,3 +80,44 @@ Questa è la fase di ricerca principale, che sfrutta le fondamenta costruite nel
     4.  **Valutazione Comparativa**: Confrontare sistematicamente le metriche di performance (`performance_media`, `robustezza`, `stabilità`) dell'agente intelligente con quelle dell'agente statico, in scenari con e senza attacchi.
 
 ---
+
+### **Fase 4: Introduzione dell'Economia e Gestione dell'Incertezza (Durata Stimata: 1-2 settimane)**
+
+Questa fase introduce una dimensione economica e strategica, focalizzandosi sulla capacità dell'agente di gestire l'**incertezza** attraverso decisioni che implicano un trade-off tra costi e benefici.
+
+*   **Obiettivo Tecnico:**
+    1.  **Sistema Economico di Base**: Implementare un `budget` che viene consumato da costi fissi e costi di produzione, e incrementato da `revenue` basati sull'efficienza del sistema.
+        *   **Costo Operativo Fisso**: Introdurre un costo (`fixed_operational_cost_per_step`) dedotto ad ogni step.
+        *   **Costo di Produzione**: Introdurre un costo per unità di carico (`cost_per_unit_of_load`). Il `load` effettivo viene limitato dal `budget` disponibile.
+    2.  **Introduzione dell'Incertezza Strutturale**:
+        *   **Campionamento Infrequente dei Sensori**: I sensori forniscono letture solo ogni `sampling_interval` step. Negli step intermedi, l'agente riceve un dato obsoleto (l'ultima lettura valida), non sapendo se lo stato del sistema è cambiato.
+    3.  **Azione Epistemica per la Riduzione dell'Incertezza**: Fornire all'agente uno strumento per gestire attivamente l'incertezza.
+        *   **Azione di Verifica/Rimisurazione di un Sensore**: Questa è l'azione epistemica centrale della fase corrente. Di fronte a un dato incerto o anomalo (es. un picco di temperatura), l'agente può **pagare un costo** (`verification_cost`) per ottenere una misurazione **immediata e certa** del valore reale di un sensore.
+        *   **Trade-Off**: L'azione ha un costo (in budget e in `verification_downtime` con produzione ridotta), quindi l'agente non può usarla continuamente. Deve "decidere" se il guadagno di informazione giustifica il costo, o se è più conveniente agire sulla base del dato incerto. Questa decisione sarà banale per l'agente statico, ma diventerà un problema di apprendimento cruciale per l'agente intelligente.
+    4.  **Azione Epistemica di Investimento (Sviluppo Futuro / Disabilitata)**: La possibilità per l'agente di investire in un potenziamento del sistema (es. raffreddamento) è **temporaneamente disabilitata** per focalizzare l'analisi sulla gestione dell'incertezza a breve termine.
+
+*   **Metriche Chiave da Misurare:**
+    *   `budget_finale`: Il budget residuo alla fine della simulazione, indicatore chiave di successo economico.
+    *   `budget_max_raggiunto`: Il picco di budget raggiunto.
+    *   `costo_produzione_step` e `costo_operativo_fisso_step`: Per l'analisi dei costi.
+    *   `verifica_effettuata`: Flag (o contatore) per tracciare quante volte l'agente ha usato l'azione di verifica.
+    *   `tempo_alla_verifica`: Step in cui l'azione di verifica è stata effettuata (per analisi contestuale).
+    *   ~~`investimento_effettuato`~~: (Metrica futura).
+    *   ~~`tempo_all_investimento`~~: (Metrica futura).
+
+---
+
+### **Fase 5: Sviluppo dell'Agente Intelligente (Active Inference) (Durata Stimata: 2+ settimane)**
+
+Questa è la fase di ricerca principale, che sfrutta le fondamenta costruite nelle fasi precedenti.
+
+*   **Task Tecnici:**
+    1.  **Sviluppo dell'Agente Active Inference**: Sostituire l'agente statico con un agente basato su Active Inference, utilizzando la libreria `pymdp`.
+    2.  **Discretizzazione dell'Ambiente**: Sviluppare una funzione che mappi gli stati continui dell'ambiente (es. 85°C) in stati discreti (es. "Caldo", "Surriscaldato") comprensibili per l'agente.
+    3.  **Costruzione del Modello Generativo**: Definire le matrici probabilistiche (A, B, C, D) che codificano la "conoscenza" e gli "obiettivi" dell'agente.
+        *   `A`: Come gli stati del mondo generano le osservazioni.
+        *   `B`: Come le azioni cambiano gli stati del mondo.
+        *   `C`: Le preferenze dell'agente (le osservazioni desiderate).
+    4.  **Valutazione Comparativa**: Confrontare sistematicamente le metriche di performance (`performance_media`, `robustezza`, `stabilità`) dell'agente intelligente con quelle dell'agente statico, in scenari con e senza attacchi.
+
+---

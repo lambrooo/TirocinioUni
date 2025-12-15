@@ -1,0 +1,6 @@
+,final_budget,final_budget,avg_efficiency,avg_efficiency,verification_count,verification_count,overheating_steps,overheating_steps,avg_load,avg_load
+,mean,std,mean,std,mean,std,mean,std,mean,std
+efe_mode,,,,,,,,,,
+epistemic_only,310.77,117.44,0.68,0.39,0.0,0.0,0.0,0.0,0.62,0.4
+full,263.79,33.28,0.52,0.11,0.0,0.0,0.0,0.0,0.46,0.11
+pragmatic_only,3343.7,1353.48,11.97,4.79,0.0,0.0,38.0,33.65,14.26,6.11

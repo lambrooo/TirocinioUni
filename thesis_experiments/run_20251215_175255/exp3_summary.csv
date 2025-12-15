@@ -1,0 +1,7 @@
+,final_budget,final_budget,avg_efficiency,avg_efficiency,avg_load,avg_load
+,mean,std,mean,std,mean,std
+config_label,,,,,,
+AI Full + Defense,538.0,19.31,0.66,0.09,0.61,0.1
+AI Pragmatic + Defense,2648.16,872.88,14.35,1.9,20.56,3.52
+Statico,525.17,909.63,4.21,3.83,4.89,4.32
+Statico + Defense,1700.31,2945.02,9.64,13.25,9.5,15.83

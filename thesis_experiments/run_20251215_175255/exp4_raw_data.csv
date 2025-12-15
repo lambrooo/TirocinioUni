@@ -1,0 +1,7 @@
+experiment,defense,label,run_id,final_budget,avg_efficiency,attacks_detected,total_attacks
+Defense_Impact,False,No Defense,0,627.5161741230107,5.060565627168689,0,12
+Defense_Impact,False,No Defense,1,1976.4458899199963,5.878764346875251,0,7
+Defense_Impact,False,No Defense,2,1038.6914832927287,1.1762091166898607,0,9
+Defense_Impact,True,With Defense,0,973.3030669987202,2.865364603847265,5,15
+Defense_Impact,True,With Defense,1,530.7194944173098,0.6194412688165903,6,9
+Defense_Impact,True,With Defense,2,644.5944915954024,1.205871293619275,3,6
