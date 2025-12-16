@@ -2,14 +2,14 @@
 
 A simulation testbed for evaluating **Active Inference agents** in cyber-physical systems under adversarial conditions.
 
-## 🎯 Project Overview
+##  Project Overview
 
 This project implements an intelligent agent based on **Active Inference** (Free Energy Principle) that can:
 - Detect and respond to cyber attacks on sensor systems
 - Balance **epistemic** (uncertainty reduction) and **pragmatic** (goal-directed) actions
 - Operate in a simulated industrial control system environment
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 ├── pytorch_simulation/          # Core simulation code
@@ -23,7 +23,7 @@ This project implements an intelligent agent based on **Active Inference** (Free
 └── thesis_experiments/          # Experiment results
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Install Dependencies
 
@@ -41,7 +41,7 @@ python3 -m streamlit run pytorch_simulation/dashboard.py
 
 Open your browser at `http://localhost:8501`
 
-## 🧠 EFE Modes (Expected Free Energy)
+##  EFE Modes (Expected Free Energy)
 
 | Mode | Behavior | Use Case |
 |------|----------|----------|
@@ -49,17 +49,17 @@ Open your browser at `http://localhost:8501`
 | `epistemic_only` | Prioritizes uncertainty reduction | High-threat environments |
 | `pragmatic_only` | Prioritizes goal achievement | Trusted environments |
 
-## 📊 Key Features
+## Key Features
 
 - **Real-time Simulation**: Monitor temperature, load, and budget dynamics
 - **Batch Experiments**: Statistical comparison of configurations
 - **WandB Integration**: Track and analyze experiment history
 - **Cyber Attack Simulation**: Test agent resilience under sensor spoofing
 
-## 🔬 Research Context
+##  Research Context
 
 This project is part of a thesis on applying Active Inference to cyber-physical systems security, demonstrating how agents can autonomously detect and mitigate sensor-based attacks.
 
-## 📝 License
+##  License
 
 Academic use only.
