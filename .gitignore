@@ -13,3 +13,9 @@ __pycache__/
 
 # System files
 .DS_Store
+
+# Logs
+wandb/
+
+# Documentation (local notes)
+Docs/
