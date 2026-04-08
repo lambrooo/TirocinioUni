@@ -21,37 +21,68 @@ import io
 from dotenv import load_dotenv
 
 # Import simulation components
-from simulation import run_simulation, run_batch_simulation, set_global_seed
-from active_inference_agent import ActiveInferenceAgent, AdaptiveActiveInferenceAgent
-from qlearning_agent import QLearningAgent, DoubleQLearningAgent
+try:
+    from pytorch_simulation.simulation import (
+        run_simulation,
+        run_batch_simulation,
+        set_global_seed,
+    )
+    from pytorch_simulation.active_inference_agent import (
+        ActiveInferenceAgent,
+        AdaptiveActiveInferenceAgent,
+    )
+    from pytorch_simulation.qlearning_agent import (
+        QLearningAgent,
+        DoubleQLearningAgent,
+    )
+except ImportError:
+    from simulation import run_simulation, run_batch_simulation, set_global_seed
+    from active_inference_agent import ActiveInferenceAgent, AdaptiveActiveInferenceAgent
+    from qlearning_agent import QLearningAgent, DoubleQLearningAgent
 
 # Import B Matrix visualization
 try:
-    from b_matrix_viz import (
+    from pytorch_simulation.b_matrix_viz import (
         plot_b_matrix_heatmap,
         plot_all_factors_summary,
         BMatrixRecorder,
     )
-
     B_MATRIX_VIZ_AVAILABLE = True
 except ImportError:
-    B_MATRIX_VIZ_AVAILABLE = False
+    try:
+        from b_matrix_viz import (
+            plot_b_matrix_heatmap,
+            plot_all_factors_summary,
+            BMatrixRecorder,
+        )
+
+        B_MATRIX_VIZ_AVAILABLE = True
+    except ImportError:
+        B_MATRIX_VIZ_AVAILABLE = False
 
 # Import Curriculum Learning
 try:
-    from curriculum_learning import (
+    from pytorch_simulation.curriculum_learning import (
         CurriculumScheduler,
         run_curriculum_simulation,
         run_curriculum_experiment,
     )
-
     CURRICULUM_AVAILABLE = True
 except ImportError:
-    CURRICULUM_AVAILABLE = False
+    try:
+        from curriculum_learning import (
+            CurriculumScheduler,
+            run_curriculum_simulation,
+            run_curriculum_experiment,
+        )
+
+        CURRICULUM_AVAILABLE = True
+    except ImportError:
+        CURRICULUM_AVAILABLE = False
 
 # Import Statistical Analysis
 try:
-    from statistical_analysis import (
+    from pytorch_simulation.statistical_analysis import (
         independent_ttest,
         paired_ttest,
         one_way_anova,
@@ -63,10 +94,25 @@ try:
         generate_latex_stats_table,
         print_analysis_report,
     )
-
     STATS_AVAILABLE = True
 except ImportError:
-    STATS_AVAILABLE = False
+    try:
+        from statistical_analysis import (
+            independent_ttest,
+            paired_ttest,
+            one_way_anova,
+            compute_confidence_interval,
+            compute_cohens_d,
+            bootstrap_ci,
+            compare_survival_rates,
+            analyze_experiment_results,
+            generate_latex_stats_table,
+            print_analysis_report,
+        )
+
+        STATS_AVAILABLE = True
+    except ImportError:
+        STATS_AVAILABLE = False
 
 try:
     import wandb
