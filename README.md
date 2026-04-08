@@ -1,65 +1,109 @@
 # Active Inference for Cyber-Physical Systems Security
 
-A simulation testbed for evaluating **Active Inference agents** in cyber-physical systems under adversarial conditions.
+Simulation framework for studying resilient control of an industrial motor under sensor attacks, uncertainty, and economic constraints.
 
-##  Project Overview
+## Research Focus
 
-This project implements an intelligent agent based on **Active Inference** (Free Energy Principle) that can:
-- Detect and respond to cyber attacks on sensor systems
-- Balance **epistemic** (uncertainty reduction) and **pragmatic** (goal-directed) actions
-- Operate in a simulated industrial control system environment
+The project investigates whether an Active Inference agent that updates its transition model online can outperform a comparable agent with a fixed model. The comparison is centered on:
 
-##  Project Structure
+- industrial motor safety under thermal stress,
+- spoofing and anomaly conditions on IIoT sensors,
+- trade-off between production, verification cost, and long-term budget,
+- static versus adaptive decision-making.
 
+## Implemented Components
+
+### Agents
+
+| Agent | Description | Learning |
+|-------|-------------|----------|
+| `Agent` | Proportional static controller | No |
+| `ActiveInferenceAgent` | Active Inference agent with fixed B matrix | No |
+| `AdaptiveActiveInferenceAgent` | Active Inference agent with online B-matrix updates | Yes |
+| `QLearningAgent` | Model-free reinforcement learning baseline | Yes |
+| `DoubleQLearningAgent` | Double Q-Learning baseline | Yes |
+
+### Environment
+
+The simulation includes:
+
+- thermal dynamics of an industrial motor,
+- load-dependent heating and actuation,
+- noisy and intermittently updated sensors,
+- anomaly and attack injection on sensor readings,
+- optional cyber-defense layer,
+- economic budget with operating costs, verification costs, and production revenue.
+
+### Analysis Tools
+
+- Streamlit dashboard for interactive experiments,
+- batch scripts for repeated runs,
+- statistical analysis utilities,
+- B-matrix visualization for adaptive Active Inference,
+- curriculum-learning utilities for staged evaluation.
+
+## Repository Structure
+
+```text
+├── pytorch_simulation/
+│   ├── active_inference_agent.py
+│   ├── simulation.py
+│   ├── dashboard.py
+│   ├── qlearning_agent.py
+│   ├── b_matrix_viz.py
+│   ├── statistical_analysis.py
+│   ├── curriculum_learning.py
+│   ├── test_agent_logic.py
+│   ├── test_markov_chain.py
+│   └── requirements.txt
+├── Docs/
+│   ├── TECHNICAL_DOCUMENTATION.md
+│   ├── progetto.md
+│   ├── specs.md
+│   ├── Analisi.md
+│   └── EXPLAIN.md
+├── run_active_inference.py
+├── run_learning_experiments.py
+├── run_thesis_experiments.py
+└── test_all_features.py
 ```
-├── pytorch_simulation/          # Core simulation code
-│   ├── active_inference_agent.py   # Active Inference agent implementation
-│   ├── simulation.py               # CPS environment simulation
-│   ├── dashboard.py                # Streamlit interactive dashboard
-│   └── requirements.txt            # Python dependencies
-├── ActiveInference.md           # Mathematical framework documentation
-├── run_thesis_experiments.py    # Batch experiment runner
-├── run_efe_experiments.py       # EFE mode comparison experiments
-└── thesis_experiments/          # Experiment results
-```
 
-## Quick Start
+## Setup
 
-### 1. Install Dependencies
+Create a virtual environment and install the dependencies:
 
 ```bash
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r pytorch_simulation/requirements.txt
 ```
 
-### 2. Run the Dashboard
+## Execution
+
+Run the dashboard:
 
 ```bash
 python3 -m streamlit run pytorch_simulation/dashboard.py
 ```
 
-### 3. Access the Interface
+Run the core validation scripts:
 
-Open your browser at `http://localhost:8501`
+```bash
+python3 pytorch_simulation/test_agent_logic.py
+python3 pytorch_simulation/test_markov_chain.py
+python3 test_all_features.py
+```
 
-##  EFE Modes (Expected Free Energy)
+## Documentation
 
-| Mode | Behavior | Use Case |
-|------|----------|----------|
-| `full` | Balances exploration and exploitation | General operation |
-| `epistemic_only` | Prioritizes uncertainty reduction | High-threat environments |
-| `pragmatic_only` | Prioritizes goal achievement | Trusted environments |
+The main technical references included in the repository are:
 
-## Key Features
+- `Docs/TECHNICAL_DOCUMENTATION.md` for the system overview and implemented modules,
+- `Docs/progetto.md` for the project report,
+- `Docs/specs.md` for the technical specification,
+- `Docs/Analisi.md` for the analysis of the static controller,
+- `Docs/EXPLAIN.md` for the conceptual explanation of epistemic and pragmatic actions.
 
-- **Real-time Simulation**: Monitor temperature, load, and budget dynamics
-- **Batch Experiments**: Statistical comparison of configurations
-- **WandB Integration**: Track and analyze experiment history
-- **Cyber Attack Simulation**: Test agent resilience under sensor spoofing
+## Notes
 
-##  Research Context
-
-This project is part of a thesis on applying Active Inference to cyber-physical systems security, demonstrating how agents can autonomously detect and mitigate sensor-based attacks.
-
-##  License
-
-Academic use only.
+Local experiment outputs such as `wandb/`, generated figures, and temporary test artifacts are not part of the core source code and can be excluded from version control or submission packages when needed.

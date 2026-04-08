@@ -3,6 +3,12 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environments
+.venv/
+venv/
 
 # Environment variables
 .env
@@ -11,11 +17,18 @@ __pycache__/
 .idea/
 .vscode/
 
-# System files
-.DS_Store
-
-# Logs
+# Logs and tracking
 wandb/
+*.log
 
-# Documentation (local notes)
-Docs/
+# Local outputs and temporary artifacts
+test_outputs/
+.DS_Store
+simulation_log.csv
+active_inference_results.png
+simulation_charts.png
+learning_experiments/
+thesis_experiments/
+thesis_figures/
+thesis_tables/
+efe_experiments/

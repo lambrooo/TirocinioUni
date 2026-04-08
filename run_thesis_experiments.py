@@ -531,14 +531,14 @@ def main():
     if args.quick:
         args.n_steps = 200
         args.n_runs = 3
-        print("⚡ Quick mode: n_steps=200, n_runs=3")
+        print("Quick mode: n_steps=200, n_runs=3")
     
     # Create output directory
     output_dir = create_output_dir(args.output_dir)
-    print(f"\n📁 Output directory: {output_dir}\n")
+    print(f"\nOutput directory: {output_dir}\n")
     
     # Run all experiments
-    print("🧪 Avvio Suite Esperimenti Tesi")
+    print("Avvio della suite di esperimenti")
     print("="*60)
     
     experiment_1_efe_modes(args.n_steps, args.n_runs, output_dir=output_dir)
@@ -550,9 +550,9 @@ def main():
     generate_thesis_summary(output_dir)
     
     print("\n" + "="*60)
-    print("✅ TUTTI GLI ESPERIMENTI COMPLETATI!")
+    print("TUTTI GLI ESPERIMENTI SONO STATI COMPLETATI")
     print("="*60)
-    print(f"\n📁 Risultati salvati in: {output_dir}")
+    print(f"\nRisultati salvati in: {output_dir}")
     print("\nFile generati:")
     for f in sorted(os.listdir(output_dir)):
         print(f"  - {f}")

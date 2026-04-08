@@ -10,18 +10,20 @@ from pytorch_simulation.active_inference_agent import ActiveInferenceAgent
 def test_B_matrix():
     print("Testing B-matrix initialization...")
     agent = ActiveInferenceAgent()
-    B = agent.get_B_matrix()
+    B = agent.B
 
     # Define expected dimensions
     # Factor 0: Temp (3 states), Control 0 (3 actions)
     # Factor 1: Motor (2 states), Control 1 (3 actions)
     # Factor 2: Load (2 states), Control 1 (3 actions)
-    # Factor 3: Cyber (2 states), Control 2 (2 actions)
+    # Factor 3: Temp sensor health (2 states), Control 2 (3 actions)
+    # Factor 4: Motor sensor health (2 states), Control 2 (3 actions)
     expected_shapes = [
         (3, 3, 3),
         (2, 2, 3),
         (2, 2, 3),
-        (2, 2, 2)
+        (2, 2, 3),
+        (2, 2, 3),
     ]
 
     for i, (b_fac, expected_shape) in enumerate(zip(B, expected_shapes)):

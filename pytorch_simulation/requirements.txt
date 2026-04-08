@@ -4,3 +4,9 @@ wandb
 matplotlib
 scikit-learn
 python-dotenv
+numpy
+scipy
+streamlit
+plotly
+seaborn
+pytest
