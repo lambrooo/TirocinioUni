@@ -5,6 +5,8 @@
 
 ---
 
+> Nota: questo documento conserva la progettazione iniziale. Lo stato corrente del repository ha già implementato l'agente Active Inference tabulare e la variante con learning online della matrice B; il confronto principale della tesi è quindi `ActiveInferenceAgent` fisso vs `AdaptiveActiveInferenceAgent`.
+
 ### **Obiettivo Generale**
 
 L'obiettivo di questo progetto è sviluppare una simulazione avanzata che serva come banco di prova ("testbed") per la valutazione di agenti di controllo. Il sistema simulato permetterà di confrontare le performance di agenti statici (basati su regole) e agenti intelligenti (es. Active Inference) in condizioni operative normali e sotto l'effetto di attacchi informatici mirati all'integrità dei dati dei sensori.
@@ -47,7 +49,7 @@ Questa fase prepara il terreno per la ricerca sugli attacchi informatici, docume
 
 ### **Fase 2.1: Modello Avanzato di Minacce (Sviluppo Futuro)**
 
-Per consentire una valutazione rigorosa dei meccanismi di cybersecurity, verrà implementato un modello di minacce più sofisticato che distingue tra due tipi di eventi:
+Per consentire una valutazione rigorosa dei meccanismi di cybersecurity, il modello distingue tra due tipi di eventi:
 
 1.  **Anomalie Naturali:**
     *   **Cosa sono:** Guasti hardware casuali e non malevoli.
@@ -71,7 +73,7 @@ Questa distinzione abiliterà una **metodologia di test a tre scenari**:
 Questa è la fase di ricerca principale, che sfrutta le fondamenta costruite nelle fasi precedenti.
 
 *   **Task Tecnici:**
-    1.  **Sviluppo dell'Agente Active Inference**: Sostituire l'agente statico con un agente basato su Active Inference, utilizzando la libreria `pymdp`.
+    1.  **Sviluppo dell'Agente Active Inference**: Implementare un agente basato su Active Inference tabulare, mantenendo il modello controllabile e senza dipendere da librerie esterne non necessarie.
     2.  **Discretizzazione dell'Ambiente**: Sviluppare una funzione che mappi gli stati continui dell'ambiente (es. 85°C) in stati discreti (es. "Caldo", "Surriscaldato") comprensibili per l'agente.
     3.  **Costruzione del Modello Generativo**: Definire le matrici probabilistiche (A, B, C, D) che codificano la "conoscenza" e gli "obiettivi" dell'agente.
         *   `A`: Come gli stati del mondo generano le osservazioni.
@@ -112,7 +114,7 @@ Questa fase introduce una dimensione economica e strategica, focalizzandosi sull
 Questa è la fase di ricerca principale, che sfrutta le fondamenta costruite nelle fasi precedenti.
 
 *   **Task Tecnici:**
-    1.  **Sviluppo dell'Agente Active Inference**: Sostituire l'agente statico con un agente basato su Active Inference, utilizzando la libreria `pymdp`.
+    1.  **Sviluppo dell'Agente Active Inference**: Implementare un agente basato su Active Inference tabulare, mantenendo il modello controllabile e senza dipendere da librerie esterne non necessarie.
     2.  **Discretizzazione dell'Ambiente**: Sviluppare una funzione che mappi gli stati continui dell'ambiente (es. 85°C) in stati discreti (es. "Caldo", "Surriscaldato") comprensibili per l'agente.
     3.  **Costruzione del Modello Generativo**: Definire le matrici probabilistiche (A, B, C, D) che codificano la "conoscenza" e gli "obiettivi" dell'agente.
         *   `A`: Come gli stati del mondo generano le osservazioni.

@@ -24,6 +24,9 @@ import os
 import sys
 from datetime import datetime
 
+# Keep experiment runs local by default; set WANDB_MODE explicitly to opt in.
+os.environ.setdefault("WANDB_MODE", "disabled")
+
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -879,13 +882,20 @@ def experiment_5_learning_curves(
 def generate_thesis_summary(output_dir):
     """Genera un documento di sintesi per la tesi."""
 
-    summary_text = """
+    summary_text = f"""
 # THESIS EXPERIMENTS: STATIC vs LEARNING AGENT
 =============================================
 
 ## Obiettivo della Tesi
 Confronto tra un agente Active Inference con modello statico (B matrix fissa)
 e un agente che apprende le dinamiche di transizione online.
+
+## Configurazione di Esecuzione
+- W&B disabilitato di default nello script (`WANDB_MODE=disabled`) per evitare
+  run online e file locali non necessari.
+- Seed base: usare `--seed 42` per riproducibilita'.
+- Campagna consigliata per la tesi: `--n_runs 10 --seed 42`.
+- Interprete consigliato nel repository: `.venv/bin/python`.
 
 ## Esperimenti Eseguiti
 
@@ -902,15 +912,13 @@ e un agente che apprende le dinamiche di transizione online.
 
 ### Esperimento 3: Learning Rate Comparison
 - Valuta l'impatto di diversi valori di learning rate
-- Range testato: 0.001 - 0.1
+- Range testato: 0.001 - 0.05
 - File: exp3_learning_rate.png
 
 ### Esperimento 4: LR Schedule Comparison
 - Confronta diversi approcci di scheduling:
   * Constant: LR fisso
   * Exponential Decay: LR decresce esponenzialmente
-  * Linear Warmup: LR parte da 0 e sale gradualmente
-  * Cosine Annealing: LR segue curva coseno
   * Adaptive: LR si adatta in base all'errore di predizione
 - File: exp4_lr_schedules.png
 
@@ -919,19 +927,19 @@ e un agente che apprende le dinamiche di transizione online.
 - Metriche: divergenza del modello, errore di predizione, performance
 - File: exp5_learning_curves.png
 
-## Conclusioni Attese
+## Interpretazione
 
-1. **Short-term**: L'agente statico e' competitivo perche' non ha
-   il "cold start" del learning.
+1. **Short-term**: misura se il learning paga anche quando il tempo di
+   adattamento e' limitato.
 
-2. **Long-term**: L'agente che apprende dovrebbe superare lo statico
-   una volta che il modello converge.
+2. **Long-term**: verifica se l'aggiornamento online della B-matrix produce
+   un vantaggio stabile rispetto al modello fisso.
 
-3. **Learning Rate**: Valori troppo alti causano instabilita',
+3. **Learning Rate**: valori troppo alti possono causare instabilita',
    valori troppo bassi rallentano l'apprendimento.
 
-4. **LR Schedule**: Schedule con decay dovrebbero bilanciare
-   esplorazione iniziale e sfruttamento successivo.
+4. **LR Schedule**: gli schedule confrontano stabilita' e velocita'
+   di adattamento.
 """
 
     with open(os.path.join(output_dir, "README.txt"), "w") as f:

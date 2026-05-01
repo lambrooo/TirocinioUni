@@ -1,0 +1,6 @@
+,final_budget,final_budget,avg_efficiency,avg_efficiency,overheating_steps,overheating_steps
+,mean,std,mean,std,mean,std
+config_label,,,,,,
+Learning (LR=0.01),2719.98,2991.4,6.99,5.28,18.6,40.02
+Learning (LR=0.05),4310.32,1731.91,10.38,1.77,22.2,70.2
+Static (Fixed Model),-149.52,459.44,0.94,0.95,8.0,25.3

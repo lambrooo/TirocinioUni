@@ -1,0 +1,6 @@
+,final_budget,final_budget,avg_efficiency_first_half,avg_efficiency_second_half
+,mean,std,mean,mean
+config_label,,,,
+Learning (constant),1926.66,18168.16,4.03,3.13
+Learning (decay),2411.27,18826.57,4.01,3.32
+Static (Fixed Model),-12277.12,3288.92,0.55,0.31

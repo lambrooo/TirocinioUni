@@ -286,7 +286,7 @@ class ActiveInferenceAgent:
 
     def plan_action(self):
         """
-        Action Selection: Minimize EFE.
+        Action selection with an EFE-derived value proxy.
         """
         selected_actions = []
 
@@ -315,9 +315,9 @@ class ActiveInferenceAgent:
                 # Predict Next State
                 qs_next = np.dot(self.B[f][:, :, a], self.qs[f])
 
-                # Expected Free Energy is approximated with a state-space proxy:
+                # The score is a compact proxy for Expected Free Energy:
                 # low entropy captures epistemic value, while selected state
-                # preferences capture pragmatic value.
+                # preferences capture pragmatic value. Higher scores are better.
                 entropy = -np.sum(qs_next * np.log(qs_next + 1e-16))
 
                 utility = 0

@@ -1,0 +1,110 @@
+# Checklist di Aggiornamento del Progetto
+
+Questo documento elenca i task tecnici necessari per implementare le fasi definite nel file `Progettazione.md`.
+
+---
+
+### **FASE 1: METRICHE DI PERFORMANCE**
+
+-   **Ambiente (`Environment`):**
+    -   [x] Aggiungere `t_safe` e `beta` come parametri del costruttore.
+    -   [x] Implementare il metodo `calculate_performance()` con la formula `load - beta * max(0, motor_temp - t_safe)`.
+
+-   **Simulazione (`run_simulation`):**
+    -   [x] Calcolare `performance` ad ogni step del loop.
+    -   [x] Aggiungere `performance` al dizionario `log_entry`.
+    -   [x] Aggiornare il salvataggio su CSV per includere la nuova colonna.
+    -   [x] Aggiornare il log su `wandb` per inviare la metrica `performance`.
+
+-   **Visualizzazione:**
+    -   [x] Aumentare il numero di subplot a 4.
+    -   [x] Aggiungere il grafico per l'andamento della `performance` nel tempo.
+    -   [x] Aggiungere una linea orizzontale per `T_safe` nel grafico della temperatura del motore.
+
+---
+
+### **FASE 3: PREPARAZIONE CYBERSECURITY (BASE)**
+
+-   **Sensore (`Sensor`):**
+    -   [x] Aggiungere l'attributo `trust_score` inizializzato a `1.0`.
+
+-   **Simulazione (`run_simulation`):**
+    -   [x] Aggiungere una variabile `is_under_attack` (0 o 1) nel loop.
+    -   [x] Impostare `is_under_attack = 1` durante i passi in cui viene introdotta un'anomalia/attacco.
+    -   [x] Aggiungere `is_under_attack` al `log_entry` (per CSV e wandb).
+
+-   **Visualizzazione:**
+    -   [x] Usare `axvspan` di Matplotlib per colorare lo sfondo dei grafici durante i periodi di attacco.
+
+---
+
+### **FASE 4: ECONOMIA E GESTIONE INCERTEZZA**
+
+-   **Ambiente (`Environment`):**
+    -   [x] Aggiungere variabili di stato per economia e costi: `budget`, `cost_per_unit_of_load`, `fixed_operational_cost_per_step`.
+    -   [x] Aggiungere variabili di stato per la verifica: `is_verifying_sensor`, `verification_cost`, `verification_downtime`, `verification_sensor_name`.
+    -   [x] ~~Aggiungere variabili per investimento: `investment_done`, `investment_cost`, ecc.~~ (Sviluppo futuro)
+    -   [x] Implementare il metodo `trigger_verification()` che imposta `is_verifying_sensor` e `verification_paused`.
+    -   [x] ~~Implementare il metodo `trigger_investment()`~~ (Sviluppo futuro)
+    -   [x] Nel metodo `step()`:
+        -   [x] Deducire `fixed_operational_cost_per_step` dal budget.
+        -   [x] Implementare la logica per dedurre il `cost_per_unit_of_load` e limitare il `load` se il budget è insufficiente.
+        -   [x] Gestire il `verification_paused` (riduzione del carico) e il decremento del timer.
+
+-   **Sensore (`Sensor`):**
+    -   [x] Aggiungere `sampling_interval` al costruttore per creare incertezza.
+    -   [x] Modificare il metodo `read()` per fornire letture solo ogni `sampling_interval` step.
+    -   [x] Aggiungere un metodo `get_verified_reading()` che restituisce il valore vero.
+
+-   **Simulazione (`run_simulation`):**
+    -   [x] Inizializzare `Environment` e `Sensor` con i nuovi parametri.
+    -   [x] Calcolare `efficiency` e `revenue` ad ogni step e aggiornare il `budget`.
+    -   [x] **Commentare/rimuovere la logica decisionale per l'investimento.**
+    -   [x] Implementare la logica decisionale dell'agente statico per la "Verifica/Rimisurazione".
+    -   [x] Gestire l'attivazione della verifica, inclusi i periodi di `verification_paused`.
+    -   [x] Aggiungere al `log_entry` tutte le nuove variabili (`budget`, `revenue`, costi, `is_verifying_sensor`, ecc.).
+    -   [x] ~~Rimuovere dal log le variabili di investimento (`investment_done`, `production_paused`)~~.
+
+-   **Visualizzazione:**
+    -   [x] Aggiungere un grafico per l'andamento del `budget` nel tempo.
+    -   [x] Segnare i punti di `verifica` con linee verticali nei grafici.
+    -   [x] ~~Rimuovere la visualizzazione per l'investimento.~~
+
+---
+
+### **FASE 5: MODELLO AVANZATO DI MINACCE (Sviluppo Futuro)**
+
+-   **Logica di Simulazione (`run_simulation`):**
+    -   [x] Refactor del loop per separare la logica delle anomalie naturali da quella degli attacchi.
+    -   [x] Implementare un trigger probabilistico per le anomalie naturali.
+    -   [x] Implementare un trigger separato probabilistico per gli attacchi esterni.
+    -   [x] Aggiungere una colonna `natural_anomaly_active` al log per distinguerla da `is_under_attack`.
+
+-   **Sensore (`Sensor`):**
+    -   [x] Espandere la classe `Sensor` per gestire logiche di attacco più complesse come `spoofing` e `DoS` con valore obsoleto.
+
+-   **Cybersecurity (Difesa):**
+    -   [x] Implementare un layer di difesa attivabile/disattivabile nella simulazione per rilevare `spoofing` e `DoS`.
+
+---
+
+### **FASE 6: AGENTE INTELLIGENTE (ACTIVE INFERENCE)**
+
+-   **Setup:**
+    -   [x] Scelta implementativa: Active Inference tabulare custom invece di dipendenza `pymdp`, per mantenere il progetto leggero e controllabile.
+
+-   **Sviluppo Agente:**
+    -   [x] Creare una nuova classe `ActiveInferenceAgent`.
+    -   [x] Definire le dimensioni degli stati, delle osservazioni e delle azioni.
+    -   [x] Costruire le matrici del modello generativo (A, B, C, D).
+    -   [x] Implementare il ciclo di inferenza e policy selection tramite Expected Free Energy.
+    -   [x] Creare `AdaptiveActiveInferenceAgent` con aggiornamento online della B-matrix e learning rate configurabile.
+
+-   **Integrazione:**
+    -   [x] Creare la discretizzazione delle osservazioni continue in indici discreti.
+    -   [x] Modificare `run_simulation` per scegliere tra agente statico, Active Inference fisso, Active Inference learning e baseline RL.
+    -   [x] Loggare metriche di learning: `learning_rate`, `model_divergence`, `avg_prediction_error`.
+
+-   **Valutazione:**
+    -   [x] Eseguire simulazioni comparative statico vs learning e learning-rate sweep.
+    -   [x] Rigenerare la campagna finale di tesi con almeno 10 run per configurazione e seed fissato (`learning_experiments/run_20260430_180334`).

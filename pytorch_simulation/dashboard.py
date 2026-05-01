@@ -1844,11 +1844,18 @@ with tab8:
 
         analysis_mode = st.radio(
             "Analysis Mode",
-            ["Quick Demo", "Analyze Comparison Results", "Custom Data Upload"],
+            [
+                "Quick Demo (Synthetic)",
+                "Analyze Comparison Results",
+                "Custom Data Upload",
+            ],
             horizontal=True,
         )
 
-        if analysis_mode == "Quick Demo":
+        if analysis_mode == "Quick Demo (Synthetic)":
+            st.warning(
+                "Demo data only. Thesis results should come from exported experiment runs."
+            )
             if st.button("Run Statistical Demo"):
                 # Generate sample data
                 np.random.seed(42)

@@ -1,0 +1,6 @@
+,final_budget,final_budget,avg_efficiency_second_half,avg_efficiency_second_half
+,mean,std,mean,std
+schedule,,,,
+Adaptive,3468.31,12923.14,3.37,4.32
+Constant,2880.04,12476.77,3.33,4.3
+Exponential Decay,2820.56,12235.3,3.25,4.13

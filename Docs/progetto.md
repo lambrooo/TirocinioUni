@@ -10,7 +10,7 @@
 
 Il progetto mira a sviluppare una simulazione a tempo discreto che funga da "testbed" per la valutazione di agenti di controllo in ambienti dinamici, economici e caratterizzati da **incertezza**. L'obiettivo finale è confrontare le performance di agenti statici con quelle di agenti intelligenti (basati su Machine Learning o Active Inference), misurando la loro capacità di gestire risorse, prendere decisioni strategiche per **ridurre l'incertezza** e mantenere l'efficienza in presenza di rumore, dati obsoleti e attacchi informatici.
 
-Questo report descrive l'architettura attuale della simulazione, le funzionalità implementate, le considerazioni di progettazione e le prospettive future.
+Questo report descrive l'architettura della simulazione, le funzionalità implementate e le scelte progettuali. Lo stato corrente del progetto usa l'agente proporzionale come baseline, ma il confronto principale della tesi è tra `ActiveInferenceAgent` con modello fisso e `AdaptiveActiveInferenceAgent` con learning online della matrice B.
 
 ---
 
@@ -68,11 +68,13 @@ Eseguono le azioni decise dall'agente sull'ambiente.
 
 Il controllore del sistema.
 
-*   **Agente Statico (attuale):**
+*   **Agente Statico (baseline):**
     *   **Controllo:** Implementa un controllo proporzionale (P-controller) per `temperature` e `load`.
     *   **Decisione Epistemica (Verifica):** Segue una regola euristica: se la `motor_temperature` letta è sospettosamente alta (`> T_safe + 10`), e se ha budget sufficiente, l'agente attiva l'azione di verifica per ottenere una misurazione certa. Questa è la sua unica capacità strategica al momento.
     *   **Decisione di Investimento (Disabilitata):** La logica per l'investimento a lungo termine è disabilitata.
-*   **Agente Intelligente (futuro):** Sarà basato su Machine Learning o Active Inference, con l'obiettivo di apprendere una policy ottimale per decidere quando è vantaggioso pagare il costo della verifica.
+*   **Agente Active Inference statico:** Usa un modello generativo tabulare pre-configurato (A, B, C, D) e seleziona le azioni tramite Expected Free Energy.
+*   **Agente Active Inference con learning:** Estende l'agente statico aggiornando online la matrice B delle transizioni. È il termine di confronto principale per valutare l'effetto dell'apprendimento.
+*   **Baseline Q-Learning:** Presente come confronto model-free di supporto, utile per appendici o analisi secondarie.
 
 ---
 
@@ -119,7 +121,7 @@ La valutazione del sistema e degli agenti si basa su:
     *   **Rumore Gaussiano:** Nelle letture dei sensori.
     *   **Campionamento Infrequente:** Dati "stale" tra un campionamento e l'altro.
     *   **Anomalie/Attacchi:** `bias` o `outlier` introdotti periodicamente nei sensori.
-*   **Futuro (FASE 5):** Il modello verrà esteso per distinguere tra anomalie naturali (guasti casuali a bassa probabilità) e attacchi informatici sofisticati (`spoofing`, `DoS`), con trigger e logiche separate.
+*   **Distinzione implementata:** Il modello separa anomalie naturali e attacchi informatici (`spoofing`, `DoS`), con trigger e logiche dedicate.
 
 ---
 
@@ -134,11 +136,11 @@ La valutazione del sistema e degli agenti si basa su:
 
 ## 7. Prospettive Future
 
-Il progetto è concepito per evolvere verso:
+Il progetto può evolvere verso:
 
-*   **Implementazione Agente Intelligente (ML/Active Inference):** Sostituire l'agente statico con un agente che apprende a ottimizzare le decisioni di controllo e strategiche (investimento, verifica) in base all'esperienza.
-*   **Modello Avanzato di Minacce e Difese Cybersecurity:** Implementare attacchi più sofisticati e meccanismi di difesa, valutando la robustezza dell'agente.
-*   **Analisi Comparativa:** Confrontare sistematicamente le performance tra agenti statici e intelligenti in scenari complessi e ostili.
+*   **Scenari di minaccia più ricchi:** Sequenze di attacchi controllate, profili di attaccante e difese con falsi positivi/falsi negativi.
+*   **Analisi statistica più ampia:** Maggior numero di run, intervalli di confidenza ed effect size per consolidare le conclusioni.
+*   **Transfer learning:** Salvataggio del modello appreso e riuso in scenari con dinamiche diverse.
 
 ---
 

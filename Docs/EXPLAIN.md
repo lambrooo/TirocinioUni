@@ -71,15 +71,15 @@ L'agente riceve solo il **risultato** della difesa (alert sì/no) come osservazi
 
 ```
 Per ogni azione possibile:
-    G(a) = Pragmatic_Value - Epistemic_Value - Opportunity_Cost
+    score(a) = Pragmatic_Value - Entropy - Opportunity_Cost
     
 Dove:
     Pragmatic_Value = quanto l'azione porta verso le preferenze
-    Epistemic_Value = quanto l'azione riduce l'entropia
+    Entropy = incertezza residua dopo l'azione
     Opportunity_Cost = 2.0 (solo per Verify, rappresenta produzione persa)
 ```
 
-L'agente sceglie l'azione con **G più alto**.
+L'agente campiona con Softmax privilegiando lo score più alto.
 
 ---
 
@@ -112,7 +112,7 @@ class ActiveInferenceAgent:
         self.infer_state(obs)  # Minimizza VFE
         
         # 2. Azione: Scegli basandosi su EFE
-        actions = self.plan_action()  # Minimizza EFE
+        actions = self.plan_action()  # Score EFE-derived
         
         return self.map_action_to_control(actions)
 ```
@@ -122,7 +122,7 @@ class ActiveInferenceAgent:
 | **Tipo di controllo** | Bayesiano (credenze probabilistiche) |
 | **Gestisce incertezza?** | SÌ - modella affordabilità dei sensori |
 | **Azioni epistemiche?** | Scelte ottimamente in base a EFE |
-| **Adattivo?** | Con learning_rate (versione futura) |
+| **Adattivo?** | No nella versione fissa; sì nella classe `AdaptiveActiveInferenceAgent` |
 
 ### Quando Verifica l'Agente Intelligente?
 
@@ -177,10 +177,10 @@ Significato: "Se lo stato vero è Optimal, ho 90% probabilità di osservare Opti
 
 ### Varianza nel Modello Generativo
 
-Il tuo collega probabilmente usa un modello **continuo** invece che discreto:
+Un modello alternativo può usare stati **continui** invece che discreti:
 
 ```
-Modello Discreto (il tuo):
+Modello discreto:
     P(o = "Low" | s = "Optimal") = 0.08
 
 Modello Continuo (del collega):
@@ -190,7 +190,7 @@ Modello Continuo (del collega):
              → Osservi valori intorno a 50±2°C
 ```
 
-| Aspetto | Tuo Modello | Modello Continuo |
+| Aspetto | Modello discreto | Modello continuo |
 |---------|-------------|------------------|
 | **Stati** | Discreti (Low, Opt, High) | Continui (34.5°C, 67.2°C, ...) |
 | **Incertezza** | Nelle probabilità della matrice | Nella varianza σ² |
@@ -224,7 +224,7 @@ Il vantaggio del modello continuo è che può rappresentare valori infiniti, ma 
 │  - Riceve: temp, motor_temp, load, cyber_alert              │
 │  - Aggiorna: credenze qs[stato] usando matrici A, B, D      │
 ├─────────────────────────────────────────────────────────────┤
-│  AZIONE (Minimizza EFE)                                     │
+│  AZIONE (Score EFE-derived)                                 │
 │                                                              │
 │  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐      │
 │  │ PRAGMATICHE │    │ EPISTEMICHE │    │    EFE      │      │
@@ -232,7 +232,7 @@ Il vantaggio del modello continuo è che può rappresentare valori infiniti, ma 
 │  │ Load ±      │    │   sensor    │    │             │      │
 │  └─────────────┘    └─────────────┘    └─────────────┘      │
 │                                                              │
-│  Sceglie azione con G massimo                               │
+│  Campiona privilegiando lo score massimo                    │
 └───────────────────────────┬─────────────────────────────────┘
                             │
                             ▼

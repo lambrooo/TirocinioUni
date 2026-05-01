@@ -59,11 +59,11 @@ Eseguono le azioni decise dall'agente sull'ambiente.
 
 ### 2.4 Agenti (Agents)
 
-Il sistema supporta tre tipi di agenti:
+Il sistema supporta più agenti, ma il confronto centrale della tesi è tra Active Inference con modello fisso e Active Inference con learning online.
 
 #### 2.4.1 Agente Statico
 *   **Controllo:** Implementa un controllo proporzionale (P-controller) per `temperature` e `load`.
-*   **Decisione Epistemica:** Segue una regola euristica: se `motor_temperature > T_safe + 10`, attiva la verifica.
+*   **Decisione Epistemica:** Segue regole euristiche su surriscaldamento, incoerenza dei sensori e alert del layer di difesa.
 *   **Limitazioni:** Non modella l'incertezza, non impara.
 
 #### 2.4.2 Agente Intelligente (Active Inference)
@@ -80,6 +80,10 @@ Il sistema supporta tre tipi di agenti:
 *   **Learning Rate:** Parametro configurabile (0.001-0.1)
 *   **Apprendimento Online:** Aggiorna la matrice B (transizioni) in base all'esperienza
 *   **Vantaggio:** Su simulazioni lunghe, impara le dinamiche reali del sistema
+
+#### 2.4.4 Baseline Q-Learning
+*   **Scopo:** Fornire un confronto model-free di supporto.
+*   **Ruolo nella tesi:** Baseline/appendice, non confronto principale.
 
 ---
 
@@ -167,10 +171,14 @@ Dashboard Streamlit per esperimenti e visualizzazione.
 
 ### Tab Disponibili
 
-1. **Single Simulation:** Esecuzione singola con grafici real-time
-2. **Batch Experiment:** Confronto statistico Defense ON vs OFF
-3. **Comparative Experiment:** Confronto multiplo configurazioni
-4. **WandB History:** Storico esperimenti (richiede API key)
+1. **Single Run:** Esecuzione singola con grafici e metriche.
+2. **Batch Experiment:** Run ripetute su configurazioni controllate.
+3. **Agent Comparison:** Confronto tra agenti.
+4. **Thesis Comparison:** Vista dedicata al confronto Static AI vs Learning AI.
+5. **Learning Analysis:** Analisi delle metriche di apprendimento.
+6. **B Matrix Visualization:** Ispezione del modello appreso.
+7. **Curriculum Learning:** Esperimenti con difficoltà progressiva.
+8. **Statistical Analysis:** Test statistici ed export LaTeX.
 
 ---
 
@@ -190,9 +198,8 @@ Dashboard Streamlit per esperimenti e visualizzazione.
 
 Il progetto supporta i seguenti confronti sperimentali:
 
-1. **Static vs Intelligent:** Dimostra vantaggio di Active Inference
-2. **Intelligent vs Adaptive:** Trova il "crossover point" dopo cui l'apprendimento paga
-3. **EFE Modes:** Confronta full vs epistemic_only vs pragmatic_only
-4. **Con/Senza Cyber Defense:** Valuta se l'agente può sostituire difese tradizionali
-5. **Variazione Precision:** Effetto sul trade-off esplorazione/sfruttamento
-
+1. **Intelligent Fixed vs Intelligent Learning:** confronto principale della tesi.
+2. **Static PID vs Intelligent:** baseline secondaria.
+3. **EFE Modes:** confronto full vs epistemic_only vs pragmatic_only.
+4. **Con/Senza Cyber Defense:** effetto del layer di difesa.
+5. **Learning Rate e Schedule:** effetto dei parametri di apprendimento.

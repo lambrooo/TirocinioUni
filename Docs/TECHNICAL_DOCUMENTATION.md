@@ -2,7 +2,7 @@
 
 **Progetto**: Active Inference per Sicurezza IIoT  
 **Autore**: Leonardo Lambruschi  
-**Ultimo aggiornamento**: Gennaio 2026
+**Ultimo aggiornamento**: Aprile 2026
 
 ---
 
@@ -50,11 +50,19 @@ B matrix definita a priori → Può non corrispondere alla vera dinamica
 B matrix inizializzata → Aggiornata ad ogni step con l'esperienza osservata
 ```
 
-L'aggiornamento della B matrix segue:
+L'aggiornamento della B matrix segue uno schema a conteggi probabilistici. Le credenze precedenti e correnti non vengono convertite in stati hard; viene invece usata un'assegnazione soft, coerente con la natura probabilistica dell'Active Inference:
+
 ```python
-B_counts[f][:, :, action] += outer_product(qs_next, qs_prev) * learning_rate
-B[f] = normalize_columns(B_counts[f])
+expected_transition = np.outer(curr_qs[f], prev_qs[f])
+B_counts[f][:, :, action] += expected_transition * learning_rate * 10
+B[f][:, state, action] = normalize(B_counts[f][:, state, action])
 ```
+
+Questa scelta ha tre vantaggi:
+
+1. mantiene la B-matrix come matrice stocastica valida, con colonne normalizzate;
+2. permette di imparare anche quando lo stato non e' osservato con certezza;
+3. rende interpretabile il cambiamento del modello tramite divergenza dalla B iniziale, prediction error e learning rate.
 
 ---
 
@@ -409,35 +417,36 @@ def run_curriculum_simulation(agent, n_steps):
 
 ## 7. Risultati Sperimentali
 
-### 7.1 Confronto Agenti (1000 step, 20 run)
+I risultati finali inclusi nel repository sono nella run
+`learning_experiments/run_20260430_180334`, generata con seed base fissato.
 
-| Agente | Survival Rate | Budget Finale (media) | Cohen's d vs Static |
-|--------|---------------|----------------------|---------------------|
-| PID Statico | 0% | -500 | - |
-| AI Statico | ~10% | ~500 | baseline |
-| **AI Learning** | **~80%** | **~7000** | **1.74 (large)** |
-| Q-Learning | ~15% | ~1000 | 0.33 (small) |
+### 7.1 Confronto Short-term (500 step, 10 run)
 
-### 7.2 Significatività Statistica
+| Configurazione | Budget finale medio | Efficienza media | Step medi in overheating |
+|----------------|--------------------:|-----------------:|-------------------------:|
+| Static Fixed Model | -149.52 | 0.94 | 8.0 |
+| Learning LR=0.01 | 2719.98 | 6.99 | 18.6 |
+| Learning LR=0.05 | 4310.32 | 10.38 | 22.2 |
 
-```
-Static vs Learning:
-  t = -5.496, p < 0.0001 **
-  Cohen's d = 1.74 (large effect)
-  
-ANOVA (3 gruppi):
-  F = 22.44, p < 0.0001 **
-  η² = 0.44
-```
+### 7.2 Confronto Long-term (5000 step, 10 run)
 
-### 7.3 Effetto Curriculum Learning
+| Configurazione | Budget finale medio | Efficienza prima metà | Efficienza seconda metà |
+|----------------|--------------------:|----------------------:|------------------------:|
+| Static Fixed Model | -12277.12 | 0.55 | 0.31 |
+| Learning constant | 1926.66 | 4.03 | 3.13 |
+| Learning decay | 2411.27 | 4.01 | 3.32 |
 
-| Stage | Static AI | Learning AI |
-|-------|-----------|-------------|
-| Easy | 80% eff | 85% eff |
-| Medium | 40% eff | 75% eff |
-| Hard | 10% eff | 60% eff |
-| Adversarial | 0% eff | 45% eff |
+### 7.3 Learning-rate schedule
+
+| Schedule | Budget finale medio | Efficienza media seconda metà |
+|----------|--------------------:|------------------------------:|
+| Constant | 2880.04 | 3.33 |
+| Exponential Decay | 2820.56 | 3.25 |
+| Adaptive | 3468.31 | 3.37 |
+
+Questi risultati sostengono il focus della tesi: a parità di struttura Active
+Inference, l'aggiornamento online della matrice B produce un vantaggio netto
+rispetto al modello fisso, soprattutto nelle run lunghe.
 
 ---
 
@@ -446,25 +455,31 @@ ANOVA (3 gruppi):
 ### 8.1 Eseguire i Test
 
 ```bash
-source .venv/bin/activate
-WANDB_MODE=disabled python test_all_features.py
+WANDB_MODE=disabled .venv/bin/python pytorch_simulation/test_agent_logic.py
+WANDB_MODE=disabled .venv/bin/python pytorch_simulation/test_markov_chain.py
+WANDB_MODE=disabled .venv/bin/python test_all_features.py
 ```
 
 ### 8.2 Eseguire Esperimenti per Tesi
 
 ```bash
-# Quick test (2 min)
-WANDB_MODE=disabled python run_learning_experiments.py --quick
+# Smoke test
+WANDB_MODE=disabled .venv/bin/python run_learning_experiments.py --quick --exp 1 3 --seed 123
 
-# Full (20+ min)
-WANDB_MODE=disabled python run_learning_experiments.py --n_runs 20
+# Campagna finale consigliata
+WANDB_MODE=disabled .venv/bin/python run_learning_experiments.py --n_runs 10 --seed 42
 ```
 
 ### 8.3 Generare Figure per Tesi
 
 ```bash
-WANDB_MODE=disabled python generate_thesis_figures.py --full
+WANDB_MODE=disabled .venv/bin/python generate_thesis_figures.py --full --seed 42
 ```
+
+Il confronto principale e' tra `ActiveInferenceAgent` con B-matrix fissa
+e `AdaptiveActiveInferenceAgent` con aggiornamento online della B-matrix.
+Q-Learning, Curriculum Learning e visualizzazioni della B-matrix completano
+l'analisi come baseline e strumenti diagnostici.
 
 ### 8.4 Salvare/Caricare Modello
 
@@ -507,14 +522,16 @@ latex = generate_latex_stats_table(analysis, 'final_budget')
 
 ---
 
-## Appendice: File Creati
+## Appendice: File Principali
 
 | File | Descrizione |
 |------|-------------|
-| `pytorch_simulation/active_inference_agent.py` | Aggiunto save/load, get_b_matrix_snapshot |
-| `pytorch_simulation/qlearning_agent.py` | **NUOVO** - Q-Learning agent |
-| `pytorch_simulation/b_matrix_viz.py` | **NUOVO** - Visualizzazione B matrix |
-| `pytorch_simulation/statistical_analysis.py` | **NUOVO** - Analisi statistica |
-| `pytorch_simulation/curriculum_learning.py` | **NUOVO** - Curriculum learning |
-| `test_all_features.py` | **NUOVO** - Test completo |
-| `docs/TECHNICAL_DOCUMENTATION.md` | **NUOVO** - Questa documentazione |
+| `pytorch_simulation/active_inference_agent.py` | Active Inference statico, Adaptive Active Inference, save/load e snapshot B-matrix |
+| `pytorch_simulation/simulation.py` | Ambiente, sensori, attuatori, cyber-defense layer e loop sperimentale |
+| `pytorch_simulation/qlearning_agent.py` | Baseline Q-Learning e Double Q-Learning |
+| `pytorch_simulation/b_matrix_viz.py` | Visualizzazione e analisi della B-matrix |
+| `pytorch_simulation/statistical_analysis.py` | Test statistici, effect size e tabelle LaTeX |
+| `pytorch_simulation/curriculum_learning.py` | Scenari progressivi a difficolta' crescente |
+| `run_learning_experiments.py` | Campagna principale Static AI vs Learning AI |
+| `generate_thesis_figures.py` | Generazione di figure e tabelle finali |
+| `test_all_features.py` | Test integrato delle feature principali |
